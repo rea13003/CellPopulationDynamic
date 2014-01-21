@@ -2,7 +2,7 @@ clear all
 clc
 
 % Test #1
-
+% Test #2
 % Generating Life Span random variable with Standard Deviation of 3 (unit=hour)
 numsamples = 1000;
 LS = 240;
