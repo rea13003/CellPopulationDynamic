@@ -1,32 +1,31 @@
 clear all
 clc
 
-% Test #1
-% Test #2
-% Generating Life Span random variable with Standard Deviation of 3 (unit=hour)
+% Generating Life Span random variable with Standard Diviation of LSSD (unit=hour)
 numsamples = 1000;
-LS = 240;
-LSSD = 100;
-LSsamples = round(LS + LSSD.*randn(numsamples, 1));
+LS = 240;% Mean Cell Life Span
+LSSD = 100;% Cell Life Span Standard Deviation
+LSsamples = round(LS + LSSD.*randn(numsamples, 1));% Generating Vector of Gaussian Random Value
 
-% Generating Cell Devision Rate random variable with Standard Deviation of 3 (unit=hour) 
+% Generating Cell Devision Rate random variable with Standard Diviation of CDRSD (unit=hour) 
 numsamples = 1000;
-CDR = 10;
-CDRSD = 3;
-CDRsamples = round(CDR + CDRSD.*randn(numsamples, 1));
-% Initializing the variables
-Tsize=1000;
-TISSUE=zeros(Tsize);
-LSREC=zeros(Tsize);
-CDREC=zeros(Tsize);
+CDR = 10; % Mean Cell Division Rate 
+CDRSD = 3; % Cell Division Rate Standard Deviation
+CDRsamples = round(CDR + CDRSD.*randn(numsamples, 1)); % Generating Vector of Gaussian Random Value
+
+% Initialization
+Tsize=100;% Initializing the size of Tissue
+TISSUE=zeros(Tsize);% Initializing the Tissue Cells
+LSREC=zeros(Tsize);% Initializing the Life Span Record
+CDREC=zeros(Tsize);% Initializing the Cell Division Rate Record 
 
 %Transplantation of cell
-TISSUE(5,5)=1;
-CDREC(5,5)=CDRsamples(randi([1,numsamples]));
-LSREC(5,5)=LSsamples(randi([1,numsamples]));
+TISSUE(50,50)=1;
+CDREC(50,50)=CDRsamples(randi([1,numsamples])); % Initializing the Cell Division Rate of transplanted cell
+LSREC(50,50)=LSsamples(randi([1,numsamples])); % Initializing the Life Span of transplanted cell
 
 
-for h=1:2400
+for h=1:1500 % Duration of Simulation in hour
     
     
     [I,J] = find(TISSUE);            %Find the cells
@@ -36,6 +35,7 @@ for h=1:2400
     k=0;                              %Initializing cell counter
     for k=1:N;
         
+   % Cell decision making for all availible cell
         if LSREC(I(k),J(k))==h
             TISSUE(I(k),J(k))=0;
             LSREC(I(k),J(k))=0;
@@ -43,7 +43,7 @@ for h=1:2400
         elseif rem(h,CDREC(I(k),J(k)))==0
                     
             
-            %Find number of neighboring cells
+         %Find number of neighboring cells
             %up left
             row_of_neighbors(1)=rem(I(k)-2+Tsize,Tsize)+1;
             column_of_neighbors(1)=rem(J(k)-2+Tsize,Tsize)+1;
@@ -78,7 +78,7 @@ for h=1:2400
             
             %Select the place for daughter cell randomly
              p=randi([1,8]);
-            
+          % Producing and Locating daughter cell 
              if TISSUE(row_of_neighbors(p),column_of_neighbors(p))==0
                 TISSUE(row_of_neighbors(p),column_of_neighbors(p))=1;
                 LSREC(row_of_neighbors(p),column_of_neighbors(p))=LSsamples(randi([1,numsamples]))+h;
@@ -86,8 +86,10 @@ for h=1:2400
              end
             
         end
-        
+       proliferation(h)=length(find(TISSUE)); 
     end
    imagesc(TISSUE)
-   pause(.01)
+   pause(.001)
 end
+
+figure, plot(proliferation)
