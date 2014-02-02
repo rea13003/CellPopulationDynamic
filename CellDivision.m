@@ -3,20 +3,37 @@ classdef CellDivision
     %   Detailed explanation goes here
     
     properties
-      Time;  
+      Time;
+      NewCellLifeSpan;
+      NewCellCellDivisionRate;
+      
     end
     
     methods
-        function celldevision=CellDivision(Time)
-                celldevision.Time=Time;
+        function celldivision=CellDivision(time,newcelllifespan,newcellcelldivisionrate)
+                celldivision.Time=time;
+                celldivision.NewCellLifeSpan=newcelllifespan;
+                celldivision.NewCellCellDivisionRate=newcellcelldivisionrate;
         end
         
-        function CellDivisionDecision(celldevision,cell)
-           if rem(celldevision.Time,cell.CellDivisionRate)==0
-               cell(thisCell.NeighborsRow(randi([1,8])),thisCell.NeighborsColumn(randi([1,8])))=Cell(thisCell.NeighborsRow(randi([1,8])),thisCell.NeighborsColumn(randi([1,8]))),LSsamples(randi([1,numsamples]))+celldevision.Time,CDRsamples(randi([1,numsamples]))
+        function newcell=CellDivisionDecision(celldivision,cell)
+           if rem(celldivision.Time,cell.CellDivisionRate)==0
+              
+              R=randi([1,8]);
+              newcellX=cell.NeighborsRow(R);
+              newcellY=cell.NeighborsColumn(R);
+              k=isempty(cell(newcellX,newcellY));
+              
+               if k==1
+                newcell(newcellX,newcellY)=Cell(newcellX,newcellY,celldivision.NewCellLifeSpan,celldivision.NewCellCellDivisionRate,cell.TissueSize);
+
+               end
                
+           end
         end
-    end
     
+    end
 end
+
+
 

@@ -14,10 +14,8 @@ classdef Apoptosis
          function cell=ApoptosisDecision(thisapop,cell)
             if thisapop.Time==cell.LifeSpan
                cell=delete(cell);
-            else
-                celldevision=CellDivision(thisapop.Time)
-                CellDivisionDecision(celldevison,cell)
-             end
+                
+            end
             
         end
     end
