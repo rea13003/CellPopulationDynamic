@@ -4,16 +4,18 @@ classdef Apoptosis
     
     properties
     Time;
+    Status;
     end
     
     methods
         
-        function thisapop=Apoptosis(Time)
-            thisapop.Time=Time;
-         end
-         function cell=ApoptosisDecision(thisapop,cell)
-            if thisapop.Time==cell.LifeSpan
-               cell=delete(cell);
+       
+         function thisapop=ApoptosisDecision(thisapop,thisCell,time)
+             thisapop.Time=time;
+             if thisapop.Time==thisCell.LifeSpan
+               thisapop.Status=1;
+            else
+               thisapop.Status=0;
                 
             end
             

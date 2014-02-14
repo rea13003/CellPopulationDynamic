@@ -4,31 +4,18 @@ classdef CellDivision
     
     properties
       Time;
-      NewCellLifeSpan;
-      NewCellCellDivisionRate;
-      
+      Status;
     end
     
     methods
-        function celldivision=CellDivision(time,newcelllifespan,newcellcelldivisionrate)
-                celldivision.Time=time;
-                celldivision.NewCellLifeSpan=newcelllifespan;
-                celldivision.NewCellCellDivisionRate=newcellcelldivisionrate;
-        end
         
-        function newcell=CellDivisionDecision(celldivision,cell)
-           if rem(celldivision.Time,cell.CellDivisionRate)==0
-              
-              R=randi([1,8]);
-              newcellX=cell.NeighborsRow(R);
-              newcellY=cell.NeighborsColumn(R);
-              k=isempty(cell(newcellX,newcellY));
-              
-               if k==1
-                newcell(newcellX,newcellY)=Cell(newcellX,newcellY,celldivision.NewCellLifeSpan,celldivision.NewCellCellDivisionRate,cell.TissueSize);
-
-               end
-               
+        function thisCellDivision=CellDivisionDecision(thisCellDivision,thisCell,time)
+            thisCellDivision.Time=time;
+           if rem(thisCellDivision.Time,thisCell.CellDivisionRate)==0
+              thisCellDivision.Status=1;
+           else
+              thisCellDivision.Status=0;
+                    
            end
         end
     

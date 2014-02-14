@@ -1,5 +1,6 @@
-clc 
+clc
 clear all
+close all
 
 LSnumsample=input('Insert the number of Cell Life Span samples');
 LSmean=input('Insert the mean of Cell Life Span samples');
@@ -13,33 +14,33 @@ CDRmean=input('Insert the mean of Cell Division Rate samples');
 CDRstandeviation=input('Insert the standard deviation of Cell Division Rate samples');
 CDRsamples=RandomGenerator(CDRnumsample,CDRmean,CDRstandeviation);
 
-TransplantedCellX=input('Insert X of Transplanted Cell');
-TransplantedCellY=input('Insert Y of Transplanted Cell');
-TransplantedCellLS=LSsamples.Samples(randi([1,LSnumsample]));
-TransplantedCellCDR=CDRsamples.Samples(randi([1,CDRnumsample]));
-TissueSize=input('Insert the Tissue Size');
-cell(TissueSize,TissueSize)=Cell;
-cell(TransplantedCellX,TransplantedCellY)=Cell(TransplantedCellX,TransplantedCellY,TransplantedCellLS,TransplantedCellCDR,TissueSize);
-
+TissueX=input('Insert the Tissue X');
+TissueY=input('Insert the Tissue Y');
 
 SimulationTime=input('Insert the simulation Time in hour');
 
-for Time=1:SimulationTime
-    
-    apoptosis=Apoptosis(Time);
+TransplantedCellX=input('Insert X of Transplanted Cell');
+TransplantedCellY=input('Insert Y of Transplanted Cell');
 
-    for i=1:TissueSize
-    for j=1:TissueSize
+cell=Cell(TissueX,TissueY);
+
+cell=TransplantCell(cell,TransplantedCellX,TransplantedCellY,LSsamples,CDRsamples);
+
+apoptosis=Apoptosis;
+celldivision=CellDivision;
+
+for Time=1:SimulationTime
+    i=0;
+    for i=1:TissueY
+        j=0;
+        for j=1:TissueX
         
-        cell(i,j)=ApoptosisDecision(apoptosis,Cell(i,j));
-        
-        NewCellLS=LSsamples.Samples(randi([1,LSsamples.NumSample]))+Time;
-        NewCellCDR=CDRsamples.Samples(randi([1,CDRsamples.NumSample]));
-        celldivision=CellDivision(Time,NewCellLS,NewCellCDR);
-        cell=CellDivisionDecision(celldivision,cell(i,j));
-        
-        
+            cell=CellFunction(cell,apoptosis,celldivision,Time,i,j,LSsamples,CDRsamples);
+            TISSUE(i,j)=isempty(cell(i,j).LifeSpan);
+        end
     end
-    end
-    
+       imagesc(TISSUE)
+       pause(.00001)
 end
+
+

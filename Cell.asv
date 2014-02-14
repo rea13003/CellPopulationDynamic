@@ -14,52 +14,49 @@ classdef Cell
     end
     
     methods
-        function thisCell=Cell(tissueX,tissueY)
+        function thisCell=Cell(ylocation,xlocation,lifespan,celldevisionrate,tissueX,tissueY)
            if nargin==2
                
-               thisCell(tissueY,tissueX)=Cell;
-               
-               for i=1:tissueY
-                   for j=1:tissueX
-                      thisCell(i,j).XLocation=i;
-                      thisCell(i,j).YLocation=j;
+
+                      thisCell(ylocation,xlocation).XLocation=xlocation;
+                      thisCell(ylocation,xlocation).YLocation=ylocation;
+                      
                       
                       %Find number of neighboring cells
             %up left
-            thisCell(i,j).NeighborsRow(1)=rem(thisCell(i,j).XLocation-2+tissueY,tissueY)+1;
-            thisCell(i,j).NeighborsColumn(1)=rem(thisCell(i,j).YLocation-2+tissueX,tissueX)+1;
+            thisCell(ylocation,xlocation).NeighborsRow(1)=rem(thisCell(ylocation,xlocation).XLocation-2+tissueY,tissueY)+1;
+            thisCell(ylocation,xlocation).NeighborsColumn(1)=rem(thisCell(ylocation,xlocation).YLocation-2+tissueX,tissueX)+1;
             
             %up
-             thisCell(i,j).NeighborsRow(2)=rem(thisCell(i,j).XLocation-2+tissueY,tissueY)+1;
-             thisCell(i,j).NeighborsColumn(2)=thisCell(i,j).YLocation;
+             thisCell(ylocation,xlocation).NeighborsRow(2)=rem(thisCell(ylocation,xlocation).XLocation-2+tissueY,tissueY)+1;
+             thisCell(ylocation,xlocation).NeighborsColumn(2)=thisCell(ylocation,xlocation).YLocation;
              
 		    %up right
-            thisCell(i,j).NeighborsRow(3)=rem(thisCell(i,j).XLocation-2+tissueY,tissueY)+1;
-            thisCell(i,j).NeighborsColumn(3)=rem(thisCell(i,j).YLocation,tissueX)+1;            
+            thisCell(ylocation,xlocation).NeighborsRow(3)=rem(thisCell(ylocation,xlocation).XLocation-2+tissueY,tissueY)+1;
+            thisCell(ylocation,xlocation).NeighborsColumn(3)=rem(thisCell(ylocation,xlocation).YLocation,tissueX)+1;            
         
             %right
-            thisCell(i,j).NeighborsRow(4)=thisCell(i,j).XLocation;
-            thisCell(i,j).NeighborsColumn(4)=rem(thisCell(i,j).YLocation,tissueX)+1;
+            thisCell(ylocation,xlocation).NeighborsRow(4)=thisCell(ylocation,xlocation).XLocation;
+            thisCell(ylocation,xlocation).NeighborsColumn(4)=rem(thisCell(ylocation,xlocation).YLocation,tissueX)+1;
             
             %bottom right
-            thisCell(i,j).NeighborsRow(5)=rem(thisCell(i,j).XLocation,tissueY)+1;
-            thisCell(i,j).NeighborsColumn(5)=rem(thisCell(i,j).YLocation,tissueX)+1;
+            thisCell(ylocation,xlocation).NeighborsRow(5)=rem(thisCell(ylocation,xlocation).XLocation,tissueY)+1;
+            thisCell(ylocation,xlocation).NeighborsColumn(5)=rem(thisCell(ylocation,xlocation).YLocation,tissueX)+1;
         	
             %bottom
-            thisCell(i,j).NeighborsRow(6)=rem(thisCell(i,j).XLocation,tissueY)+1;
-            thisCell(i,j).NeighborsColumn(6)=thisCell(i,j).YLocation;
+            thisCell(ylocation,xlocation).NeighborsRow(6)=rem(thisCell(ylocation,xlocation).XLocation,tissueY)+1;
+            thisCell(ylocation,xlocation).NeighborsColumn(6)=thisCell(ylocation,xlocation).YLocation;
         
             %bottom left
-            thisCell(i,j).NeighborsRow(7)=rem(thisCell(i,j).XLocation,tissueY)+1;
-            thisCell(i,j).NeighborsColumn(7)=rem(thisCell(i,j).YLocation-2+tissueX,tissueX)+1;           
+            thisCell(ylocation,xlocation).NeighborsRow(7)=rem(thisCell(ylocation,xlocation).XLocation,tissueY)+1;
+            thisCell(ylocation,xlocation).NeighborsColumn(7)=rem(thisCell(ylocation,xlocation).YLocation-2+tissueX,tissueX)+1;           
          
             %left
-            thisCell(i,j).NeighborsRow(8)=thisCell(i,j).XLocation;
-            thisCell(i,j).NeighborsColumn(8)=rem(thisCell(i,j).YLocation-2+tissueX,tissueX)+1;
+            thisCell(ylocation,xlocation).NeighborsRow(8)=thisCell(ylocation,xlocation).XLocation;
+            thisCell(ylocation,xlocation).NeighborsColumn(8)=rem(thisCell(ylocation,xlocation).YLocation-2+tissueX,tissueX)+1;
            
                        
-                   end
-               end
+                   
            end
         end
         
