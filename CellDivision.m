@@ -16,7 +16,7 @@ classdef CellDivision
     methods
         
         % The CellDivisionDecision function decides to divide each cell
-        % if the reminder of (simulation time/cell division rate) is zero
+        % if the remainder of (simulation time/cell division rate) is zero
         function thisCellDivision=CellDivisionDecision(thisCellDivision,thisCell,time)
             thisCellDivision.Time=time;
            if rem(thisCellDivision.Time,thisCell.CellDivisionRate)==0

@@ -16,7 +16,7 @@ classdef Apoptosis
     
     methods
         
-         % The ApoptosisDecision function decides to kill each cell
+         % The ApoptosisDecision function decides the apoptosis of each cell
          % if the simulation time reaches to the life span of cell
          function thisapop=ApoptosisDecision(thisapop,thisCell,time)
              thisapop.Time=time;
