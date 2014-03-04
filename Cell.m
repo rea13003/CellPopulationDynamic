@@ -1,19 +1,26 @@
+%---------------------------------------------------------%
+%       This file has been been created by Reza Amin      %   
+%           CSML lab, University of Connecticut           %
+%---------------------------------------------------------%
+
 classdef Cell
     %CELL Summary of this class goes here
-    %   Detailed explanation goes here
+    %Detailed explanation goes here
     
     properties
-        XLocation;
-        YLocation;
+        XLocation; % X location of each cell in the tissue.
+        YLocation; % Y location of each cell in the tissue.
               
-        LifeSpan;
-        CellDivisionRate;
-        NeighborsRow;
-        NeighborsColumn;
+        LifeSpan; % Life span of each cell.
+        CellDivisionRate; % Cell division rate of each cell.
+        NeighborsRow; %Arrey of 8 neighbor's Y location.
+        NeighborsColumn; % Arrey of 8 neighbor's X location.
 
     end
     
     methods
+        
+        %Construct a tissue of cells base on the size of tissue.
         function thisCell=Cell(tissueX,tissueY)
            if nargin==2
                
@@ -63,6 +70,8 @@ classdef Cell
            end
         end
         
+        % "TransplantCell" is to locate parent cell in defined
+        % location of tissue and set its properties.
         function thisCell=TransplantCell(thisCell,TransplantedCellX,TransplantedCellY,LSsamples,CDRsamples)
            
             TransplantedCellLS=LSsamples.Samples(randi([1,LSsamples.NumSample]));
@@ -71,21 +80,30 @@ classdef Cell
             thisCell(TransplantedCellY,TransplantedCellX).LifeSpan=TransplantedCellLS;
             thisCell(TransplantedCellY,TransplantedCellX).CellDivisionRate=TransplantedCellCDR;
         end
-                    
+        
+        % "CellFunction" is the governor function for division and
+        % apoptosis in each cell
         function thisCell=CellFunction(thisCell,thisApop,thisCellDivision,time,i,j,LSsamples,CDRsamples)
+            %Call "ApoptosisDecision" method inside "Apoptosis" class
             thisApop=ApoptosisDecision(thisApop,thisCell(i,j),time);
+            %Kill the cell if the "ApoptosisDecision" makes the thisApop.Status==1
             if thisApop.Status==1
                 thisCell(i,j)=delete(thisCell(i,j));
             end
             
+            %Call "CellDivisionDecision" method inside "CellDivision" class
             thisCellDivision=CellDivisionDecision(thisCellDivision,thisCell(i,j),time);
             
-           if thisCellDivision.Status==1
+             %Divide if thisCellDivision.Status==1 and the randomly
+             %selected location (among neighbors) for new cell is empty
+              if thisCellDivision.Status==1
               R=randi([1,8]);
               newcellY=thisCell(i,j).NeighborsRow(R);
               newcellX=thisCell(i,j).NeighborsColumn(R);
               k=isempty(thisCell(newcellY,newcellX).LifeSpan);
               
+              %Set the properties of daughter cell if the randomly selected
+              %location is free (k==1).
                if k==1
                  NewCellLS=LSsamples.Samples(randi([1,LSsamples.NumSample]))+time;
                  NewCellCDR=CDRsamples.Samples(randi([1,CDRsamples.NumSample]));
@@ -95,7 +113,9 @@ classdef Cell
            end
             
         end
-                           
+        
+        %"delete" is a method of this class to make the properties of
+        %killed cell equal to zero
         function thisCell=delete(thisCell)
            
 %                thisCell.XLocation=[];

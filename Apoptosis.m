@@ -1,15 +1,23 @@
+%---------------------------------------------------------%
+%       This file has been been created by Reza Amin      %   
+%           CSML lab, University of Connecticut           %
+%---------------------------------------------------------%
+
+%This class contains a method for making the apoptosis decision.
+
 classdef Apoptosis
     %APOPTOSIS Summary of this class goes here
     %   Detailed explanation goes here
     
     properties
-    Time;
-    Status;
+    Time; % Simulation time
+    Status; % Decision of the function (1=apoptosis, 0= continue living)
     end
     
     methods
         
-       
+         % The ApoptosisDecision function decides to kill each cell
+         % if the simulation time reaches to the life span of cell
          function thisapop=ApoptosisDecision(thisapop,thisCell,time)
              thisapop.Time=time;
              if thisapop.Time==thisCell.LifeSpan
